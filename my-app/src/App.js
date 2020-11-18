@@ -15,7 +15,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch("https://localhost:44394/api/Item")
+    fetch("https://onlineshoprestapi20201118203846.azurewebsites.net/api/Item")
       .then(response => response.json())
       .then(data => {
         for (var i = 0; i < data.length; i++) {
