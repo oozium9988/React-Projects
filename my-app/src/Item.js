@@ -15,7 +15,7 @@ function Item(props) {
                     onChange={() => props.handleChangeCheckbox(props.item.Id)}
                 />
                 <label 
-                    for="quantity"
+                    htmlFor="quantity"
                     className={props.item.displayQuantity ? "show" : "hide"}
                 >Quantity: </label>
                 <input 
@@ -24,7 +24,7 @@ function Item(props) {
                     value={props.item.quantity}
                     className={props.item.displayQuantity ? "show" : "hide"}
                     name="quantity" 
-                    min="1" 
+                    min="0" 
                     max="99"
                     onChange={(event) => props.handleChangeNumber(props.item.Id, event)}>
                 </input>

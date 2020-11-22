@@ -1,17 +1,20 @@
 import React, {Component} from 'react'
 import Item from'./Item'
 import './index.css'
+//import _ from 'lodash'
 
 class App extends Component {
   constructor() {
     super()
 
     this.state = {
-      Items: []
+      Items: [],
+      basket: {}
     }
 
     this.handleChangeCheckbox = this.handleChangeCheckbox.bind(this)
     this.handleChangeNumber = this.handleChangeNumber.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   componentDidMount() {
@@ -20,12 +23,20 @@ class App extends Component {
       .then(data => {
         for (var i = 0; i < data.length; i++) {
           data[i].completed = false
-          data[i].quantity = 1
+          data[i].quantity = 0
           data[i].displayQuantity = false
         }
+        const basketStorage = JSON.parse(localStorage.getItem('basket'))
+
         this.setState ({
-          Items: data
+          Items: data,
         })
+
+        if (basketStorage !== null) {
+          this.setState({
+            basket: basketStorage
+          })
+        }
       })
   }
 
@@ -58,6 +69,38 @@ class App extends Component {
     })
   }
 
+  handleClick() {
+    this.setState(prevState => {
+      let updatedBasket = Object.assign({}, prevState.basket);
+      const prevItems = prevState.Items;
+      for (var i = 0; i < prevState.Items.length; i++) {
+        const it = prevItems[i];
+        if (it.completed && it.quantity > 0) {
+          if (updatedBasket.hasOwnProperty(it.Name)) {
+            updatedBasket[it.Name][0] += (+it.quantity)
+            updatedBasket[it.Name][1] += it.Price*(+it.quantity)
+          } else {
+            updatedBasket[it.Name] = [(+it.quantity), it.Price*(+it.quantity)]
+          }
+        }
+      }
+
+      const updatedItems = prevState.Items.map(item => {
+        item.quantity = 0
+        item.completed = false
+        item.displayQuantity = false
+        return item
+      })
+
+      localStorage.setItem('basket', JSON.stringify(updatedBasket))
+
+      return {
+        basket: updatedBasket,
+        Items: updatedItems 
+      }
+    })
+  }
+
   render() {
     const shopItems = this.state.Items.map(item => 
     <Item 
@@ -68,6 +111,7 @@ class App extends Component {
     />)
     return (
       <div className="item-list">
+        <button id="AddToBasket" onClick={() => this.handleClick()}>Add To Basket</button>
         {shopItems}
       </div>
     )
