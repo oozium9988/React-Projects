@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import Item from'./Item'
+import BasketItem from './BasketItem'
 import './index.css'
 //import _ from 'lodash'
 
@@ -9,12 +10,17 @@ class App extends Component {
 
     this.state = {
       Items: [],
-      basket: {}
+      basket: []
     }
 
     this.handleChangeCheckbox = this.handleChangeCheckbox.bind(this)
     this.handleChangeNumber = this.handleChangeNumber.bind(this)
+    this.handleChangeCheckboxBasket = this.handleChangeCheckboxBasket.bind(this)
+    this.handleChangeNumberBasket = this.handleChangeNumberBasket.bind(this)
     this.handleClick = this.handleClick.bind(this)
+    this.handleClickButton = this.handleClickButton.bind(this)
+    this.handleClickButtonBasket = this.handleClickButtonBasket.bind(this)
+    this.handleClickClearBasket = this.handleClickClearBasket.bind(this)
   }
 
   componentDidMount() {
@@ -22,10 +28,11 @@ class App extends Component {
       .then(response => response.json())
       .then(data => {
         for (var i = 0; i < data.length; i++) {
-          data[i].completed = false
+          data[i].checked = false
           data[i].quantity = 0
           data[i].displayQuantity = false
         }
+
         const basketStorage = JSON.parse(localStorage.getItem('basket'))
 
         this.setState ({
@@ -44,7 +51,7 @@ class App extends Component {
     this.setState(prevState => {
       const updatedItems = prevState.Items.map(item => {
         if (item.Id === id) {
-          item.completed = !item.completed
+          item.checked = !item.checked
           item.displayQuantity = !item.displayQuantity
         }
         return item
@@ -69,25 +76,64 @@ class App extends Component {
     })
   }
 
+  handleChangeCheckboxBasket(id) {
+    this.setState(prevState => {
+      const updatedBasket = prevState.basket.map(item => {
+        if (item.id === id) {
+          item.checked = !item.checked
+          item.displayQuantity = !item.displayQuantity
+        }
+        return item
+      })
+      return {
+        basket: updatedBasket
+      }
+    })
+  }
+
+  handleChangeNumberBasket(id, event) {
+    this.setState(prevState => {
+      const updatedBasket = prevState.basket.map(item => {
+        if (item.id === id) {
+          item.removeQuantity = event.target.value
+        }
+        return item
+      })
+      return {
+        basket: updatedBasket
+      }
+    })
+  }
+
   handleClick() {
     this.setState(prevState => {
-      let updatedBasket = Object.assign({}, prevState.basket);
-      const prevItems = prevState.Items;
-      for (var i = 0; i < prevState.Items.length; i++) {
+      let updatedBasket = JSON.parse(JSON.stringify(prevState.basket))
+      const prevItems = prevState.Items
+      for (var i = 0; i < prevItems.length; i++) {
         const it = prevItems[i];
-        if (it.completed && it.quantity > 0) {
-          if (updatedBasket.hasOwnProperty(it.Name)) {
-            updatedBasket[it.Name][0] += (+it.quantity)
-            updatedBasket[it.Name][1] += it.Price*(+it.quantity)
+        if (it.checked && it.quantity > 0) {
+          var index = updatedBasket.findIndex(bItem => bItem.Name === it.Name)
+          if (index !== -1) {
+            updatedBasket[index].quantity += (+it.quantity)
+            updatedBasket[index].Price += it.Price*(+it.quantity)
           } else {
-            updatedBasket[it.Name] = [(+it.quantity), it.Price*(+it.quantity)]
+            let obj = {
+              id: it.Id, 
+              Name: it.Name, 
+              quantity: (+it.quantity), 
+              Price: (+it.Price)*(+it.quantity),
+              checked: false,
+              displayQuantity: false,
+              removeQuantity: +0
+            }
+            updatedBasket.push(obj)
           }
         }
       }
 
       const updatedItems = prevState.Items.map(item => {
         item.quantity = 0
-        item.completed = false
+        item.checked = false
         item.displayQuantity = false
         return item
       })
@@ -101,6 +147,87 @@ class App extends Component {
     })
   }
 
+  handleClickButton(id) {
+    this.setState(prevState => {
+      let updatedBasket = JSON.parse(JSON.stringify(prevState.basket))
+      const prevItems = prevState.Items
+      for (var i = 0; i < prevItems.length; i++) {
+        const it = prevItems[i]
+        if (it.checked && it.quantity > 0 && it.Id === id) {
+          var index = updatedBasket.findIndex(bItem => bItem.Name === it.Name)
+          if (index !== -1) {
+            updatedBasket[index].quantity += (+it.quantity)
+            updatedBasket[index].Price += it.Price*(+it.quantity)
+          } else {
+            let obj = {
+              id: it.Id, 
+              Name: it.Name, 
+              quantity: (+it.quantity), 
+              Price: (+it.Price)*(+it.quantity),
+              checked: false,
+              displayQuantity: false,
+              removeQuantity: +0
+            }
+            updatedBasket.push(obj)
+          }
+        }
+      }
+
+      const updatedItems = prevState.Items.map(item => {
+        if (item.Id === id) {
+          item.quantity = 0
+          item.checked = false
+          item.displayQuantity = false
+        }
+        
+        return item
+      })
+
+      localStorage.setItem('basket', JSON.stringify(updatedBasket))
+
+      return {
+        Items: updatedItems,
+        basket: updatedBasket
+      }
+    })
+  }
+
+  handleClickButtonBasket(id) {
+    this.setState(prevState => {
+      const prevItems = prevState.Items
+      const updatedBasket = prevState.basket.map(item => {
+        if (item.id === id) {
+          const itemPrice = prevItems.find(Item => Item.Id === id).Price
+          item.quantity -= item.removeQuantity
+          item.Price -= itemPrice*item.removeQuantity
+        }
+
+        return item
+      })
+
+      for (var i = 0; i < updatedBasket.length; i++) {
+        if (updatedBasket[i].quantity === 0) {
+          updatedBasket.splice(i, 1)
+        }
+      }
+
+      localStorage.setItem('basket', JSON.stringify(updatedBasket))
+
+      return {
+        basket: updatedBasket
+      }
+    }) 
+  }
+
+  handleClickClearBasket() {
+    const updatedBasket = []
+    localStorage.setItem('basket', JSON.stringify(updatedBasket))
+    
+    this.setState({
+      basket: []
+    }) 
+  }
+
   render() {
     const shopItems = this.state.Items.map(item => 
     <Item 
@@ -108,10 +235,35 @@ class App extends Component {
       item = {item}
       handleChangeCheckbox = {this.handleChangeCheckbox}
       handleChangeNumber = {this.handleChangeNumber}
+      handleClickButton = {this.handleClickButton}  
     />)
+    
+    const basketItems = Array.isArray(this.state.basket) ? this.state.basket.map(item =>
+    <BasketItem
+      key = {item.id}
+      item = {item}
+      handleChangeNumberBasket = {this.handleChangeNumberBasket}
+      handleClickButtonBasket = {this.handleClickButtonBasket}
+      handleChangeCheckboxBasket = {this.handleChangeCheckboxBasket}
+    />) : ''
+
+    const basketString = this.state.basket === undefined || this.state.basket.length === 0 ?
+      '' : 'Basket'
+
     return (
       <div className="item-list">
-        <button id="AddToBasket" onClick={() => this.handleClick()}>Add To Basket</button>
+        <h3 className="basket-header">{basketString}</h3>
+        {basketItems}
+        <br />
+        <span><button 
+          id="Clear Basket" 
+          onClick={() => this.handleClickClearBasket()}
+          className={Array.isArray(this.state.basket) && this.state.basket.length > 0 ? "show-clearbasket" : "hide"}
+        >Clear basket</button>
+        <button 
+          id="AddSelectedToBasket" 
+          onClick={() => this.handleClick()}
+        >Add all selected to basket</button></span>
         {shopItems}
       </div>
     )

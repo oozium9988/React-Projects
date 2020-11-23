@@ -1,18 +1,15 @@
 import React from 'react'
-import './index.css'
 
-function Item(props) {
+function BasketItem(props) {
     return (
-        <div className="shop-item">
-            <h2>{props.item.Name}</h2>
-            <br />
-            <div className="item-p">
-                <span>{props.item.Price.toLocaleString
-                ("en-US", { style: "currency", currency: "GBP"})} - {props.item.Tagline}</span>
+        <div>
+            <p>
+                {props.item.Name} &times; {props.item.quantity} - {props.item.Price.toLocaleString
+                ("en-US", { style: "currency", currency: "GBP"})}
                 <input 
                     type="checkbox" 
                     checked={props.item.checked} 
-                    onChange={() => props.handleChangeCheckbox(props.item.Id)}
+                    onChange={() => props.handleChangeCheckboxBasket(props.item.id)}
                 />
                 <label 
                     htmlFor="quantity"
@@ -21,22 +18,23 @@ function Item(props) {
                 <input 
                     type="number" 
                     id="quantity" 
-                    value={props.item.quantity}
+                    value={props.item.removeQuantity}
                     className={props.item.displayQuantity ? "show" : "hide"}
                     name="quantity" 
                     min="0" 
-                    max="99"
-                    onChange={(event) => props.handleChangeNumber(props.item.Id, event)}
+                    max={props.item.quantity}
+                    onChange={(event) => props.handleChangeNumberBasket(props.item.id, event)}
                 ></input>
                 <button
                     id="button"
                     className={props.item.displayQuantity ? "show" : "hide"}
                     name="button"
-                    onClick={() => props.handleClickButton(props.item.Id)}
-                >Add to basket</button>
-            </div>
+                    onClick={() => props.handleClickButtonBasket(props.item.id)}
+                >Remove from basket</button>
+                
+            </p>    
         </div>
     )
 }
 
-export default Item
+export default BasketItem

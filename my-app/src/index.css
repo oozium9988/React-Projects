@@ -70,6 +70,22 @@ label.show[for="quantity"] {
   margin-left: 30px;
 }
 
+button.hide {
+  display: none;
+}
+
+button.show {
+  margin-left: 30px;
+}
+
+button.show-clearbasket {
+  margin-right: 10px
+}
+
 input[type=checkbox]:focus {
   outline: 0;
+}
+
+h3.basket-header {
+  text-decoration: underline
 }
