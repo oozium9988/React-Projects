@@ -24,7 +24,7 @@ body {
   padding: 30px;
 }
 
-.shop-item {
+.shop-item-show {
   /*display: flex;
   justify-content: flex-start;*/
   align-items: center;
@@ -37,7 +37,11 @@ body {
   color: #333333;
 }
 
-.shop-item .item-p {
+.shop-item-hide {
+  display: none;
+}
+
+.shop-item-show .item-p {
   display: flex;
   justify-content: flex-start;
 }
@@ -88,4 +92,40 @@ input[type=checkbox]:focus {
 
 h3.basket-header {
   text-decoration: underline
+}
+
+input.fa-input[type="submit"] { 
+  font-family: 
+    FontAwesome, 
+    ‘Helvetica Neue’, 
+    Helvetica, 
+    Arial, 
+    sans-serif; 
+  border: 1px solid blue;
+  background: blue;
+  color: white;
+}
+
+span.search {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid grey;
+  padding: 2px;
+}
+
+input.search-box[type="text"] {
+  flex-grow: 2;
+  border: none;
+}
+
+input.search-box[type="text"]:focus {
+  outline: none;
+}
+
+button.checkout-link-hide {
+  display: none;
+}
+
+div.checkout-hide {
+  display: none;
 }

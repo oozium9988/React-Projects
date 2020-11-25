@@ -3,7 +3,7 @@ import './index.css'
 
 function Item(props) {
     return (
-        <div className="shop-item">
+        <div className={props.item.displayItem ? "shop-item-show" : "shop-item-hide"}>
             <h2>{props.item.Name}</h2>
             <br />
             <div className="item-p">
