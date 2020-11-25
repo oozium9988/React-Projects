@@ -31,8 +31,7 @@ function BasketItem(props) {
                     className={props.item.displayQuantity ? "show" : "hide"}
                     name="button"
                     onClick={() => props.handleClickButtonBasket(props.item.id)}
-                >Remove from basket</button>
-                
+                >Remove from basket</button>                
             </p>    
         </div>
     )

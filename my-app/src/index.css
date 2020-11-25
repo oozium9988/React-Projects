@@ -24,6 +24,11 @@ body {
   padding: 30px;
 }
 
+.cent {
+  text-align: center;
+  width: 50%;
+}
+
 .shop-item-show {
   /*display: flex;
   justify-content: flex-start;*/
@@ -79,11 +84,119 @@ button.hide {
 }
 
 button.show {
-  margin-left: 30px;
+  color: #fff !important;
+  text-decoration: none;
+  background: #50df20;
+  padding: 10px;
+  border-radius: 8px;
+  display: inline-block;
+  border: none;
+  margin-bottom: 20px;
+  margin-left: 50px;
+}
+
+button.show:hover {
+  background: green;
+  -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+  cursor: pointer;
+}
+
+button.showall {
+  color: #fff !important;
+  text-decoration: none;
+  background: #50df20;
+  padding: 10px;
+  border-radius: 8px;
+  display: inline-block;
+  border: none;
+}
+
+button.showall:hover {
+  background: green;
+  -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+  cursor: pointer;
 }
 
 button.show-clearbasket {
-  margin-right: 10px
+  margin-right: 10px;
+  color: #fff !important;
+  text-decoration: none;
+  background: #e05252;
+  padding: 10px;
+  border-radius: 8px;
+  display: inline-block;
+  border: none;
+}
+
+button.show-clearbasket:hover {
+  background: #c32222;
+  -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+  cursor: pointer;
+}
+
+button.checkout-link-show {
+  margin-right: 10px;
+  color: #fff !important;
+  text-decoration: none;
+  background: #4d79ff;
+  padding: 10px;
+  border-radius: 8px;
+  display: inline-block;
+  border: none;
+}
+
+button.checkout-link-show:hover {
+  background: #1a53ff;
+  -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+  cursor: pointer;
+}
+
+button.back-to-main-page {
+  color: #fff !important;
+  text-decoration: none;
+  background: #4d79ff;
+  padding: 10px;
+  border-radius: 8px;
+  display: inline-block;
+  border: none;
+}
+
+button.back-to-main-page:hover {
+  background: #1a53ff;
+  -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+  cursor: pointer;
+}
+
+button.confirm-purchase {
+  color: #fff !important;
+  text-decoration: none;
+  background: #50df20;
+  padding: 10px;
+  border-radius: 8px;
+  display: inline-block;
+  border: none;
+  margin-left:25%;
+  margin-right:25%;
+}
+
+button.confirm-purchase:hover {
+  margin-left:25%;
+  margin-right:25%;
+  background: green;
+  -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+  cursor: pointer;
 }
 
 input[type=checkbox]:focus {
@@ -128,4 +241,26 @@ button.checkout-link-hide {
 
 div.checkout-hide {
   display: none;
+}
+
+header {
+  margin: auto;
+  height: 100px;
+  width: 70%;
+  display: flex;
+  align-items: center;
+  background: #6441a5;
+  background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+  background: linear-gradient(to right, #2a0845, #6441A5);
+  padding: 30px;
+}
+
+header > p {
+  font-family: VT323, monospace;
+  color: whitesmoke;
+  font-size: 50px;
+  position: absolute;
+  left: 40%;
+  margin-right: 30%;
+  margin-left: 10px;
 }
